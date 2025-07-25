@@ -1,0 +1,7 @@
+bin
+obj
+SimpleBank.db
+SimpleBank.db-shm
+SimpleBank.db-wal
+Data
+
