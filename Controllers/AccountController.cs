@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 namespace SimpleBanking.Controllers
 {
@@ -13,10 +14,10 @@ namespace SimpleBanking.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAccount([FromBody] AccountDto accountDto)
+    public async Task<IActionResult> AddAccount([FromBody] AddAccountDto accountDto)
     {
-      var account = await _accountService.AddAccountAsync(accountDto);
-      return Ok(account);
+      var results = await _accountService.PerformActivity<AddAccountDto, AddAccountDto>(accountDto);
+      return Ok(results);
     }
   }
 }

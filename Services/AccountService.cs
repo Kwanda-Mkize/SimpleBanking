@@ -1,15 +1,20 @@
-public class AccountService
+using Microsoft.EntityFrameworkCore;
+
+public class AccountService : TransactionAdaptor
 {
   private readonly IAccountRepository AccountRepository;
 
-  public AccountService(IAccountRepository accountRepository)
+  public AccountService(DBcontext dbContext, IAccountRepository accountRepository) : base(dbContext)
   {
     AccountRepository = accountRepository;
   }
 
-  public async Task<Account> AddAccountAsync(AccountDto accountDto)
+  public override async Task<TRes> ExecuteTask<TDto, TRes>(TDto dto)
   {
-    var mapData = AccountMappper.MapToDomain(accountDto);
-    return await AccountRepository.AddAccount(mapData);
+    if (dto is not AddAccountDto accountDto)
+      throw new ArgumentException("Invalid DTO type for Adding account");
+
+    var mappedData = AccountMappper.MapToDomain(accountDto);
+    return (TRes)(Object)await AccountRepository.AddAccount(mappedData);
   }
 }

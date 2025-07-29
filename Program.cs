@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DBcontext>(options => options.UseSqlite("DataSource=SimpleBank.db"));
 
+builder.Services.AddScoped<IDempotency, IdempotencyStore>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
